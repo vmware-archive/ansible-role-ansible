@@ -12,6 +12,8 @@ Available variables are listed below, along with default values (see `defaults/m
 
     update_package_cache: True
 
+Whether to update the aptitude, yum, pacman or other package cache before running any install tasks.
+
 ## Example playbook
 
 ```
