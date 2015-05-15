@@ -3,31 +3,9 @@
   apt: update_cache=yes
   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and update_package_cache
 
-- name: Assure pip is not installed via apt.
-  apt: name={{ item }} state=absent
-  with_items:
-    - python-pip
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-- name: Install python-setuptools (easy_install)
+- name: Assure Ansible required related packages are installed.
   apt: name={{ item }} state=latest
   with_items:
-    - python-setuptools
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-- name: Install easy_install via pip.
-  command: easy_install pip
-  args:
-    creates: /usr/local/bin/pip
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-- name: Upgrade Virtualenv
-  pip: name=virtualenv state=latest
-
-- name: Assure Ansible and required, related packages are installed.
-  apt: name={{ item }} state=latest
-  with_items:
-    - ansible
     - git
     - curl
     - lxde
@@ -37,6 +15,11 @@
     - python-dev
     - zlib1g-dev
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Add any additional packages if defined
+  apt: name={{ item }} state=latest
+  with_items: ansible_additional_packages
+  when: ansible_additional_packages is defined
 
 - name: Assure services enabled
   service: name="{{ item }}" enabled=true
@@ -49,3 +32,4 @@
     - httplib2
     - lxml
     - pyvmomi
+    - ansible
