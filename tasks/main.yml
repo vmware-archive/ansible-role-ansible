@@ -6,6 +6,7 @@
 - name: Assure Ansible required related packages are installed.
   apt: name={{ item }} state=latest
   with_items:
+    - sshpass
     - git
     - curl
     - lxde
