@@ -11,10 +11,11 @@
     - curl
     - lxde
     - libxml2-dev
-    - libxslt1-dev 
-    - libxslt-dev 
+    - libxslt1-dev
+    - libxslt-dev
     - python-dev
     - zlib1g-dev
+    - chromium-browser
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Add any additional packages if defined
