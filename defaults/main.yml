@@ -1,2 +1,15 @@
 ---
 update_package_cache: True
+
+ansible_services:
+  - lxdm
+
+ansible_packages:
+  - sshpass
+  - git
+  - curl
+  - libxml2-dev
+  - libxslt1-dev
+  - libxslt-dev
+  - python-dev
+  - zlib1g-dev

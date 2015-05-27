@@ -5,18 +5,13 @@
 
 - name: Assure Ansible required related packages are installed.
   apt: name={{ item }} state=latest
-  with_items:
-    - sshpass
-    - git
-    - curl
-    - lxde
-    - libxml2-dev
-    - libxslt1-dev
-    - libxslt-dev
-    - python-dev
-    - zlib1g-dev
-    - chromium-browser
+  with_items: ansible_packages
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Assure Ansible required related packages for Photon
+  yum: name={{ item }} state=latest
+  with_items: ansible_packages
+  when: ansible_distribution == 'NA'
 
 - name: Add any additional packages if defined
   apt: name={{ item }} state=latest
@@ -25,8 +20,8 @@
 
 - name: Assure services enabled
   service: name="{{ item }}" enabled=true
-  with_items:
-    - lxdm
+  with_items: ansible_services
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Install pip modules
   pip: name="{{ item }}" state=latest
