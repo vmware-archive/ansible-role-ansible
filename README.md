@@ -14,6 +14,13 @@ Available variables are listed below, along with default values (see `defaults/m
 
 Whether to update the aptitude, yum, pacman or other package cache before running any install tasks.
 
+    ansible_services:
+      - lxdm
+
+The services (that should get installed and loaded in addition to basic Ansible needs.
+For instance, lxdm will install and set enable the Lightweight X Desktop Manager for
+login and general window services on a development machine.
+
 ## Example playbook
 
 ```
