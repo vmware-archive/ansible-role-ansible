@@ -2,7 +2,7 @@
 update_package_cache: True
 
 ansible_services:
-  - lxdm
+  - []
 
 ansible_packages:
   - sshpass
