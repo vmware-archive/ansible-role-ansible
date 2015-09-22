@@ -25,7 +25,7 @@ login and general window services on a development machine.
 
 ```
 ---
-- hosts: supervio
+- hosts: ansible
   sudo: True
   connection: local
   roles:
