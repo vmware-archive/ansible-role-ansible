@@ -1,0 +1,30 @@
+language: python
+python: "2.7"
+
+sudo: required
+
+before_install:
+# our repo directory structure doesn't match our role name
+# rename the cloned dir so that tests pass
+# within repo and within travis.
+  - mv ../ansible-role-ansible ../ansible
+
+install:
+  - pip install ansible
+  - pip install ansible-lint
+  - echo -e '[defaults]\nroles_path = ../' > ansible.cfg
+
+script:
+
+# syntax test
+  - "ansible-playbook -i tests/inventory tests/test.yml --syntax-check --connection=local --sudo"
+
+# single run test
+  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo"
+
+# re-run test and check for no change
+# note that we're expecting one change to happen.
+# the libxslt-dev package is virtual, and appears to change every time.
+# when bug is fixed, this will start failing.  Change 1 to 0 below.
+# see bug at: https://github.com/ansible/ansible-modules-core/pull/1348
+  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo | grep -q 'changed=1.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)"
