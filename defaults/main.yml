@@ -29,3 +29,11 @@ ansible_packages:
   - python-dev
   - python-pip
   - zlib1g-dev
+
+photon_packages:
+  - libxml2-devel
+  - libxslt-devel
+  - zlib-devel
+  - sshpass
+  - git
+  - curl

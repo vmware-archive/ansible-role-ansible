@@ -3,28 +3,40 @@ python: "2.7"
 
 sudo: required
 
+env:
+  - image: ubuntu
+    tag: 14.04
+    init: /sbin/init
+    run_opts: ""
+  - image: photon
+    tag: latest
+    init:
+    run_opts: ""
+
+
+services:
+  - docker
+
 before_install:
-# our repo directory structure doesn't match our role name
-# rename the cloned dir so that tests pass
-# within repo and within travis.
-  - mv ../ansible-role-ansible ../ansible
+  - sudo docker pull ${image}:${tag}
+  - sudo docker build --rm=true --file=tests/dockerfiles/${image}-${tag} -t ${image}:local .
 
 install:
-  - pip install ansible
-  - pip install ansible-lint
-  - echo -e '[defaults]\nroles_path = ../' > ansible.cfg
+  - container_id=$(mktemp)
+  - sudo docker run --detach --volume=$(pwd):/etc/ansible/roles/ansible:ro ${run_opts} ${image}:local ${init} > "${container_id}"
 
 script:
+  # syntax test
+  - sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/bin/ansible-playbook /etc/ansible/roles/ansible/tests/test.yml --syntax-check
 
-# syntax test
-  - "ansible-playbook -i tests/inventory tests/test.yml --syntax-check --connection=local --sudo"
+  # run once
+  - sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/bin/ansible-playbook /etc/ansible/roles/ansible/tests/test.yml
 
-# single run test
-  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo"
-
-# re-run test and check for no change
-# note that we're expecting one change to happen.
-# the libxslt-dev package is virtual, and appears to change every time.
-# when bug is fixed, this will start failing.  Change 1 to 0 below.
-# see bug at: https://github.com/ansible/ansible-modules-core/pull/1348
-  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo | grep -q 'changed=1.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)"
+  # re-run test and check for no change or limited changes
+  # some things always change...
+  # see bug at: https://github.com/ansible/ansible-modules-core/pull/1348
+  - >
+    sudo docker exec "$(cat ${container_id})" env ANSIBLE_NOCOLOR=1 /usr/bin/ansible-playbook /etc/ansible/roles/ansible/tests/test.yml
+    | grep -q 'changed=2.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)

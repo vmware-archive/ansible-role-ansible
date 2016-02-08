@@ -25,7 +25,7 @@
 
 - name: Assure Ansible required related packages for Photon
   yum: name={{ item }} state=latest
-  with_items: ansible_packages
+  with_items: photon_packages
   when: ansible_lsb.codename == 'Photon'
 
 - name: Add any additional packages if defined
