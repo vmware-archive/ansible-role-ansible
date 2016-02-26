@@ -38,10 +38,15 @@
   with_items: ansible_services
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
+# retry, because sometimes we get a failure if the right pip package is already installed
 - name: Install pip modules
   pip: name="{{ item }}" state=latest
+  register: ansible_pip_result
   with_items:
     - httplib2
     - lxml
     - pyvmomi
     - ansible
+  until: ansible_pip_result|success
+  retries: 5
+  delay: 1
