@@ -19,6 +19,9 @@ update_package_cache: True
 ansible_services:
   - []
 
+ansible_additional_packages:
+  - []
+
 ansible_packages:
   - sshpass
   - git

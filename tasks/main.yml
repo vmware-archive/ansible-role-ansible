@@ -20,22 +20,22 @@
 
 - name: Assure Ansible required related packages are installed.
   apt: name={{ item }} state=latest
-  with_items: ansible_packages
+  with_items: "{{ ansible_packages }}"
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Assure Ansible required related packages for Photon
   yum: name={{ item }} state=latest
-  with_items: photon_packages
+  with_items: "{{ photon_packages }}"
   when: ansible_lsb.codename == 'Photon'
 
 - name: Add any additional packages if defined
   apt: name={{ item }} state=latest
-  with_items: ansible_additional_packages
+  with_items: "{{ ansible_additional_packages }}"
   when: ansible_additional_packages is defined
 
 - name: Assure services enabled
   service: name="{{ item }}" enabled=true
-  with_items: ansible_services
+  with_items: "{{ ansible_services }}"
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 # retry, because sometimes we get a failure if the right pip package is already installed
