@@ -40,13 +40,14 @@
 
 # retry, because sometimes we get a failure if the right pip package is already installed
 - name: Install pip modules
-  pip: name="{{ item }}" state=latest
+  pip: name="{{ item }}"
   register: ansible_pip_result
-  with_items:
-    - httplib2
-    - lxml
-    - pyvmomi
-    - ansible
+  with_items: "{{ pip_modules }}"
   until: ansible_pip_result|success
   retries: 5
   delay: 1
+
+# Separately install Ansible from pip, doing it with other modules borks now
+# If it fails we want to stop
+- name: Install Ansible via pip
+  pip: name="ansible"

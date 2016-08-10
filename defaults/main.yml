@@ -32,6 +32,7 @@ ansible_packages:
   - python-dev
   - python-pip
   - zlib1g-dev
+  - libssl-dev
 
 photon_packages:
   - libxml2-devel
@@ -40,3 +41,11 @@ photon_packages:
   - sshpass
   - git
   - curl
+  - libssl-dev
+
+pip_modules:
+  - httplib2
+  - lxml
+  - pyvmomi
+  - paramiko
+  - pycrypto
