@@ -51,3 +51,9 @@
 # If it fails we want to stop
 - name: Install Ansible via pip
   pip: name="ansible"
+  
+- name: Create CDS container inventory file for chaperone-ui
+  template:
+    src: templates/cds-inventory
+    dest: ../../playbooks/chaperone-ui/examples/cds_inventory
+  when: ansible_virtualization_type == 'docker'
