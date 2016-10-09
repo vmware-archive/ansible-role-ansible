@@ -31,7 +31,12 @@
 - name: Add any additional packages if defined
   apt: name={{ item }} state=latest
   with_items: "{{ ansible_additional_packages }}"
-  when: ansible_additional_packages is defined
+  when: ansible_additional_packages is defined and (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
+
+- name: Add any additional packages if defined
+  yum: name={{ item }} state=latest
+  with_items: "{{ ansible_additional_packages }}"
+  when: ansible_additional_packages is defined and ansible_lsb.codename == 'Photon'
 
 - name: Assure services enabled
   service: name="{{ item }}" enabled=true

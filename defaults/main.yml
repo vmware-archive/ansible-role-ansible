@@ -37,11 +37,11 @@ ansible_packages:
 photon_packages:
   - libxml2-devel
   - libxslt-devel
+  - openssl-devel
   - zlib-devel
   - sshpass
   - git
   - curl
-  - libssl-dev
 
 pip_modules:
   - httplib2
