@@ -33,6 +33,7 @@ ansible_packages:
   - python-pip
   - zlib1g-dev
   - libssl-dev
+  - libffi-dev
 
 photon_packages:
   - libxml2-devel
