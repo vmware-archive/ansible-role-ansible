@@ -34,6 +34,7 @@ ansible_packages:
   - zlib1g-dev
   - libssl-dev
   - libffi-dev
+  - rsync
 
 photon_packages:
   - libxml2-devel
