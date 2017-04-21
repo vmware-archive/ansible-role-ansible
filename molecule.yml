@@ -44,11 +44,11 @@ docker:
       image: ubuntu
       image_version: '16.04'
       command: /lib/systemd/systemd
-
-    - name: ubuntu-trusty
-      image: ubuntu
-      image_version: '14.04'
-      command: /sbin/init
+#
+#    - name: ubuntu-trusty
+#      image: ubuntu
+#      image_version: '14.04'
+#      command: /sbin/init
 
     - name: ubuntu-precise
       image: ubuntu
