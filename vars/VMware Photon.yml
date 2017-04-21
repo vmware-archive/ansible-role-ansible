@@ -15,15 +15,9 @@
 #
 ---
 update_package_cache: True
-
-ansible_services:
-  - []
-
-ansible_additional_packages:
-  - []
-
+ansible_services: []
+ansible_additional_packages: []
 ansible_pachage_update: yum makecache
-
 ansible_packages:
   - awk
   - glibc-devel

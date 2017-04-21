@@ -15,15 +15,9 @@
 #
 ---
 update_package_cache: True
-
-ansible_services:
-  - []
-
-ansible_additional_packages:
-  - []
-
+ansible_services: []
+ansible_additional_packages: []
 ansible_pachage_update: apt-get update
-
 ansible_packages:
   - sshpass
   - git
@@ -33,13 +27,10 @@ ansible_packages:
   - libxslt-dev
   - python-dev
   - python-pip
-#  - python-pyparser
-#  - python-appdirs
   - zlib1g-dev
   - libssl-dev
   - libffi-dev
   - rsync
-
 pip_modules:
   - httplib2
   - lxml

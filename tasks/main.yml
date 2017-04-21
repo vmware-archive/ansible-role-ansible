@@ -28,13 +28,15 @@
   shell: "{{ ansible_pachage_update }}"
   when: ansible_pachage_update is defined and update_package_cache
   changed_when: False
+  tags:
+    - skip_ansible_lint
 
 - name: Install Ansible Prerequisites
   package: name={{ item }} state=present
   with_items: "{{ ansible_packages }}"
 
 - name: Add any additional packages if defined
-  apt: name={{ item }} state=latest
+  apt: name={{ item }} state=present
   with_items: "{{ ansible_additional_packages }}"
 
 - name: Assure services enabled

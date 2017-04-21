@@ -15,15 +15,9 @@
 #
 ---
 update_package_cache: True
-
-ansible_services:
-  - []
-
-ansible_additional_packages:
-  - []
-
+ansible_services: []
+ansible_additional_packages: []
 ansible_pachage_update: yum makecache fast
-
 ansible_packages:
   - epel-release
   - git
@@ -37,8 +31,6 @@ ansible_packages:
   - openssl-devel
   - libffi-devel
   - rsync
-
-
 pip_modules:
   - httplib2
   - lxml
