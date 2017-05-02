@@ -1,0 +1,30 @@
+# Copyright © 2017 VMware, Inc. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+galaxy_info:
+  description: Ensure ansible is installed via pip
+  company: VMware Inc.
+  license: Apache 2.0
+  min_ansible_version: 2.0
+
+  platforms:
+
+  - name: Photon Linux
+    versions:
+    - 1.0
+
+#  - name: Fedora
+#    versions:
+#    - 24
+#    - 25
+  - name: CentOS
+    versions:
+    - 7
+  - name: Ubuntu
+    versions:
+#    - all
+    - precise
+    - xenial
+#  - name: opensuse
+#    versions:
+#    - 42.2

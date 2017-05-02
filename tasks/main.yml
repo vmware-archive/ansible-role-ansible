@@ -1,5 +1,5 @@
 #
-#  Copyright 2015 VMware, Inc.
+#  Copyright 2015-2017 VMware, Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -14,29 +14,30 @@
 #  limitations under the License.
 #
 ---
-- name: Upgrade apt cache
-  apt: update_cache=yes
-  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and update_package_cache
 
-- name: Assure Ansible required related packages are installed.
-  apt: name={{ item }} state=latest
+- name: Include OS-specific variables, Redhat not Fedora
+  include_vars: "{{ ansible_os_family }}.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora'
+
+- name: Include OS-specific variables, non RedHat and/or Fedora
+  include_vars: "{{ ansible_distribution }}.yml"
+  when: ansible_os_family != 'RedHat' or ansible_distribution == 'Fedora'
+
+
+- name: Upgrade package cache
+  shell: "{{ ansible_pachage_update }}"
+  when: ansible_pachage_update is defined and update_package_cache
+  changed_when: False
+  tags:
+    - skip_ansible_lint
+
+- name: Install Ansible Prerequisites
+  package: name={{ item }} state=present
   with_items: "{{ ansible_packages }}"
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-- name: Assure Ansible required related packages for Photon
-  yum: name={{ item }} state=latest
-  with_items: "{{ photon_packages }}"
-  when: ansible_lsb.codename == 'Photon'
 
 - name: Add any additional packages if defined
-  apt: name={{ item }} state=latest
+  apt: name={{ item }} state=present
   with_items: "{{ ansible_additional_packages }}"
-  when: ansible_additional_packages is defined and (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
-
-- name: Add any additional packages if defined
-  yum: name={{ item }} state=latest
-  with_items: "{{ ansible_additional_packages }}"
-  when: ansible_additional_packages is defined and ansible_lsb.codename == 'Photon'
 
 - name: Assure services enabled
   service: name="{{ item }}" enabled=true
@@ -53,6 +54,5 @@
   delay: 1
 
 # Separately install Ansible from pip, doing it with other modules borks now
-# If it fails we want to stop
 - name: Install Ansible via pip
   pip: name="ansible"

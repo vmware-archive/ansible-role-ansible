@@ -1,5 +1,5 @@
 #
-#  Copyright 2015 VMware, Inc.
+#  Copyright 2015-2017 VMware, Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,9 +15,24 @@
 #
 ---
 update_package_cache: True
-
 ansible_services: []
 ansible_additional_packages: []
-ansible_packages: []
-photon_packages: []
-pip_modules: []
+ansible_pachage_update: yum makecache fast
+ansible_packages:
+  - git
+  - gcc
+  - curl
+  - libxml2-devel
+  - libxslt-devel
+  - python-devel
+#  - python-pip
+  - zlib-devel
+  - openssl-devel
+  - libffi-devel
+  - rsync
+pip_modules:
+  - httplib2
+  - lxml
+  - pyvmomi
+  - paramiko
+  - pycrypto
